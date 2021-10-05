@@ -4,38 +4,52 @@
 <input type="text" v-model="name">
 <label>번호</label>
 <input type="text" v-model="phone">
-<div class='menu'>메뉴</div>
+<div class='menu'>메뉴</div>{{selectedMenu}}
 <div class='menu'>
-<div class='checkbox_box_default' @click='boxclick'>
-<input type="checkbox" v-model='selectedMenu' value="3개">3개 1,500원
+    <label for="3">
+<div class='checkbox_box_default' >
+<input type="checkbox" id="3" v-model='selectedMenu' value="3개">3개 1,500원
 </div>
-<div class='checkbox_box_default' @click='boxclick'>
-<input type="checkbox" v-model='selectedMenu' value="8개">8개 3,000원
+    </label>
+    <label for="8">
+<div class='checkbox_box_default' >
+<input type="checkbox" id="8" v-model='selectedMenu' value="8개">8개 3,000원
 </div>
-<div class='checkbox_box_default' @click='boxclick'>
-<input type="checkbox" v-model='selectedMenu' value="14개">14개 5,000원
+    </label>
+    <label for="14">
+<div class='checkbox_box_default' >
+<input type="checkbox" id="14" v-model='selectedMenu' value="14개">14개 5,000원
 </div>
-<div class='checkbox_box_default' @click='boxclick'>
-<input type="checkbox" v-model='selectedMenu' value="28개">28개 10,000원
+    </label>
+    <label for="28">
+<div class='checkbox_box_default' >
+<input type="checkbox" id="28" v-model='selectedMenu' value="28개">28개 10,000원
 </div>
+    </label>
 </div>
 <br>
-<div class='menu'>맛 선택(여러개 선택 가능)</div>
+<div class='menu'>맛 선택(여러개 선택 가능)</div>{{selectedFlavor}}
 <div class='menu'>
 
-<div class='checkbox_box_default' @click='boxclick'>
-<input type="checkbox" v-model='selectedFlavor' value="오리지널">오리지널
+    <label for="original" >
+<div class='checkbox_box_default' >
+<input type="checkbox" id="original" v-model='selectedFlavor' value="오리지널">오리지널
 </div>
-<div class='checkbox_box_default' @click='boxclick'>
-<input type="checkbox" v-model='selectedFlavor' value="매운맛">매운맛
+    </label>
+    <label for="spicy">
+<div class='checkbox_box_default' >
+<input type="checkbox" id="spicy" v-model='selectedFlavor' value="매운맛">매운맛
 </div>
-<div class='checkbox_box_default' @click='boxclick'>
-<input type="checkbox" v-model='selectedFlavor' value="치즈맛">치즈맛
+    </label>
+    <label for="cheese">
+<div class='checkbox_box_default' >
+<input type="checkbox" id="cheese" v-model='selectedFlavor' value="치즈맛">치즈맛
 </div>
+    </label>
 </div>
 
 
-<input type="submit" value="등록하기">
+<input type="submit" @click="submit" value="등록하기">
 </div>
 
 
@@ -53,19 +67,18 @@ export default {
     }
   },
   methods:{
-    boxclick: function(event){
-    let dv = event.currentTarget;
-    let cb = dv.querySelector('input');
-    console.log(cb.checked);
-    if(dv.className=="checkbox_box_default"){
-        dv.className="checkbox_box_selected";
-        cb.checked=true;
-    }else{
-        dv.className="checkbox_box_default";
-        cb.checked=false;
-    }
-
-
+    submit(){
+        let obj = {"name":this.name,"phone":this.phone,"menu":this.selectedMenu,"flavor":this.selectedFlavor};
+        console.log(obj);
+         fetch("http://localhost:8081/waitingRegister",{
+                                    method : 'POST',
+                                    mode : 'cors',
+                                    cache : 'no-cache',
+                                    credentials : 'same-origin',
+                                    redirect : 'follow',
+                                    referrer : 'no-referrer',
+                                    body: JSON.stringify(obj)
+                                }).then(response => console.log(response))
 
 
     }
@@ -91,9 +104,7 @@ input[type=text], select {
   box-sizing: border-box;
 }
 
-label{
-float: left;
-}
+
 
 input[type=submit]:hover {
   background-color: #45a049;
@@ -113,21 +124,12 @@ input[type=submit] {
 .checkbox_box_default{
     width:93%;
     padding : 0.5em;
-    background-color: #FFFFFF;
+    background-color: white;
     border : 2px solid #4CAF50;
     border-radius: 18px;
     margin: 0.8em 0em;
 }
 
-.checkbox_box_selected{
-    width:93%;
-    padding : 0.5em;
-    background-color: #4CAF50;
-    color:white;
-    border : 2px solid #4CAF50;
-    border-radius: 18px;
-    margin: 0.8em 0em;
-}
 
 .menu{
    text-align:left;
