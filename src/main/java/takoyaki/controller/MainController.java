@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import takoyaki.config.RedisConfig;
+import takoyaki.model.DataDto;
+import takoyaki.service.DataService;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -32,80 +34,11 @@ import java.util.Map;
 public class MainController {
 
     @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    DataService dataService;
 
-    @GetMapping("/redisTest")
-    public ResponseEntity<?> addRedisKey() {
-
-        String key = "hyunsun";
-
-        HashOperations<String, Object, Object> hash = redisTemplate.opsForHash();
-
-        hash.put(key, "name", "현선");
-        hash.put(key, "phone", "01032719321");
-        hash.put(key, "menu", "3개");
-        hash.put(key, "flavor", "매운맛");
-
-        Object hello = hash.get(key, "name");
-        Object hello2 = hash.get("test1", "name");
-
-        System.out.println("name = " + hello);
-        System.out.println("name = " + hello2);
-        Map<Object, Object> entries = hash.entries(key);
-
-        System.out.println("entries = " + entries.get("phone"));
-
-        Long size = hash.size(key);
-
-        System.out.println("size = " + size);
-
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-
-    public void getValue(String name, String phone, JSONArray menu, JSONArray flavor){
-        HashOperations<String, Object, Object> hashOp = redisTemplate.opsForHash();
-        Map<Object, Object> entries = hashOp.entries(phone);
-
-        if(MapUtils.isEmpty(entries)){
-            System.out.println("entry가 null");
-            setValue(name,phone,menu,flavor);
-        }else{
-            System.out.println("등록된 ");
-            System.out.println(entries.get("name"));
-            System.out.println(entries.get("menu"));
-            System.out.println(entries.get("flavor"));
-
-        }
-
-
-    }
-
-    public void setValue(String name, String phone, JSONArray menu, JSONArray flavor){
-        Date myDate = new Date();
-        SimpleDateFormat dtFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-        String date = dtFormat.format(myDate);
-
-        HashOperations<String, Object, Object> hashOp = redisTemplate.opsForHash();
-        String key = phone;
-        hashOp.put(key, "name", "현선");
-        hashOp.put(key, "menu", menu);
-        hashOp.put(key, "flavor", flavor);
-        hashOp.put(key,"status","대기");
-        hashOp.put(key,"등록시각",date);
-    }
-
-
-//    @GetMapping("/redisTest/{key}")
-//    public ResponseEntity<?> getRedisKey(@PathVariable String key) {
-//        ValueOperations<String, String> vop = redisTemplate.opsForValue();
-//        String value = vop.get(key);
-//        return new ResponseEntity<>(value, HttpStatus.OK);
-//    }
-
-    @PostMapping("/waitingRegister")
+    @PostMapping("/registerWaiting")
     public ResponseEntity<?> test(HttpServletRequest req)throws Exception {
         String body = readBody(req);
-        System.out.println(body);
 
         org.json.simple.parser.JSONParser parser = new org.json.simple.parser.JSONParser();
         Object obj = parser.parse(body);
@@ -120,7 +53,16 @@ public class MainController {
         System.out.println("menu : "+ menu);
         System.out.println("flavor : "+ flavor);
 
-        getValue(name,phone,menu,flavor);
+        DataDto dataDto  = new DataDto();
+        dataDto.setPhone(phone);
+
+        DataDto result;
+        result = dataService.selectCustomer(dataDto);
+
+        System.out.println("select 결과 : " + result.getName());
+
+
+
 
         return new ResponseEntity<>("성공", HttpStatus.OK);
     }

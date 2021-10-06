@@ -70,7 +70,7 @@ export default {
     submit(){
         let obj = {"name":this.name,"phone":this.phone,"menu":this.selectedMenu,"flavor":this.selectedFlavor};
         console.log(obj);
-         fetch("http://localhost:8081/waitingRegister",{
+         fetch("http://localhost:8081/registerWaiting",{
                                     method : 'POST',
                                     mode : 'cors',
                                     cache : 'no-cache',
