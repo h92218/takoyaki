@@ -5,7 +5,6 @@
     <router-link to="/register">대기 등록하기</router-link>
   </div>
 
-  <button>카카오로그인</button>
 </template>
 
 <script>

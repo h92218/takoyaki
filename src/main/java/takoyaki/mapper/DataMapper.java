@@ -7,7 +7,7 @@ import takoyaki.model.DataDto;
 @Mapper
 @Repository
 public interface DataMapper {
-    DataDto selectCustomer(DataDto dataDto);
+    DataDto selectCustomer(String phone);
     void completeCustomer(DataDto dataDto);
     void insertCustomer(DataDto dataDto);
     void deleteCustomer(DataDto dataDto);

@@ -53,18 +53,31 @@ public class MainController {
         System.out.println("menu : "+ menu);
         System.out.println("flavor : "+ flavor);
 
-        DataDto dataDto  = new DataDto();
-        dataDto.setPhone(phone);
+        DataDto resultDto = dataService.selectCustomer(phone);
+        System.out.println(resultDto);
+        String message="";
+        DataDto paramDto = new DataDto();
 
-        DataDto result;
-        result = dataService.selectCustomer(dataDto);
+        if(resultDto == null){
+            paramDto.setPhone(phone);
+            paramDto.setName(name);
+            String mmenu="";
+            for(int i=0; i< menu.size();i++){
+                mmenu+= " " + menu.get(i);
+            }
+            paramDto.setMenu(mmenu);
+            String fflavor="";
+            for(int i=0; i< flavor.size();i++){
+                fflavor+= " "+ flavor.get(i);
+            }
+            paramDto.setFlavor(fflavor);
 
-        System.out.println("select 결과 : " + result.getName());
+            message = dataService.insertCustomer(paramDto);
+        }else{
+            message = "이미 등록된 번호입니다.";
+        }
 
-
-
-
-        return new ResponseEntity<>("성공", HttpStatus.OK);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     public static String readBody(HttpServletRequest request) throws IOException {

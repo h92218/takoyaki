@@ -8,6 +8,7 @@ import org.json.simple.JSONArray;
 @Getter
 @Setter
 public class DataDto {
+    int idx;
     String phone;
     String name;
     String menu;

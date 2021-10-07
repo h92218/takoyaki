@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="takoyaki.mapper.DataMapper">
-    <select id="selectCustomer" parameterType="takoyaki.model.DataDto" resultType="takoyaki.model.DataDto">
+    <select id="selectCustomer" parameterType="String" resultType="takoyaki.model.DataDto">
         SELECT *
         FROM CUSTOMER
         WHERE phone=#{phone} and completion=0

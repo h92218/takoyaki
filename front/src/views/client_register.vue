@@ -33,7 +33,7 @@
 
     <label for="original" >
 <div class='checkbox_box_default' >
-<input type="checkbox" id="original" v-model='selectedFlavor' value="오리지널">오리지널
+<input type="checkbox" id="original" v-model='selectedFlavor' value="기본맛">기본맛
 </div>
     </label>
     <label for="spicy">
@@ -63,7 +63,8 @@ export default {
         name:'현선',
         phone :'01032719321',
         selectedMenu:[],
-        selectedFlavor:[]
+        selectedFlavor:[],
+        result:''
     }
   },
   methods:{
@@ -78,7 +79,12 @@ export default {
                                     redirect : 'follow',
                                     referrer : 'no-referrer',
                                     body: JSON.stringify(obj)
-                                }).then(response => console.log(response))
+                                }).then(response => response.text())
+                                .then(res=>{
+                                    console.log(res);
+                                    this.result=res;
+                                    location.href='http://localhost:8081/result?res='+this.result;
+                                })
 
 
     }
