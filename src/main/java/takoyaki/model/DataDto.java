@@ -10,7 +10,6 @@ import org.json.simple.JSONArray;
 public class DataDto {
     int idx;
     String phone;
-    String name;
     String menu;
     String flavor;
     String completion;

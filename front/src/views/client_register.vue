@@ -1,7 +1,5 @@
 <template>
 <div class="container">
-<label>이름</label>
-<input type="text" v-model="name">
 <label>번호</label>
 <input type="text" v-model="phone">
 <div class='menu'>메뉴</div>{{selectedMenu}}
@@ -60,7 +58,6 @@ export default {
   name: 'register',
   data(){
     return{
-        name:'현선',
         phone :'01032719321',
         selectedMenu:[],
         selectedFlavor:[],
@@ -69,7 +66,7 @@ export default {
   },
   methods:{
     submit(){
-        let obj = {"name":this.name,"phone":this.phone,"menu":this.selectedMenu,"flavor":this.selectedFlavor};
+        let obj = {"phone":this.phone,"menu":this.selectedMenu,"flavor":this.selectedFlavor};
         console.log(obj);
          fetch("http://localhost:8081/registerWaiting",{
                                     method : 'POST',

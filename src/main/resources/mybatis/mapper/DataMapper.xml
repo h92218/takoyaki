@@ -9,10 +9,11 @@
         WHERE phone=#{phone} and completion=0
     </select>
 
+
     <insert id="insertCustomer" parameterType="takoyaki.model.DataDto" >
-        INSERT INTO CUSTOMER (idx,phone,name,menu,flavor,completion,register_date)
+        INSERT INTO CUSTOMER (idx,phone,menu,flavor,completion,register_date)
         VALUES
-        (CUSTOMER_SEQUENCE.nextval,#{phone},#{name},#{menu},#{flavor},0,(select to_char(sysdate,'yyyy-MM-dd hh:mm') from dual))
+        (CUSTOMER_SEQUENCE.nextval,#{phone},#{menu},#{flavor},0,(select to_char(sysdate,'yyyy-MM-dd hh24:mm') from dual))
     </insert>
 
     <update id="completeCustomer" parameterType="takoyaki.model.DataDto" >
@@ -33,6 +34,7 @@
         flavor=#{flavor}
         where phone=#{phone}
     </update>
+
 
 
 

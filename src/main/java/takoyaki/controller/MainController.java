@@ -36,19 +36,36 @@ public class MainController {
     @Autowired
     DataService dataService;
 
-    @PostMapping("/registerWaiting")
-    public ResponseEntity<?> test(HttpServletRequest req)throws Exception {
+    @PostMapping("/checkRegister")
+    public ResponseEntity<?> checkRegister(HttpServletRequest req)throws Exception{
         String body = readBody(req);
 
         org.json.simple.parser.JSONParser parser = new org.json.simple.parser.JSONParser();
         Object obj = parser.parse(body);
         JSONObject jsonObj = (JSONObject) obj;
-        String name = (String) jsonObj.get("name");
+        String phone = (String) jsonObj.get("phone");
+
+        DataDto resultDto = dataService.selectCustomer(phone);
+
+        if(resultDto == null){
+            return new ResponseEntity<>(HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(resultDto, HttpStatus.OK);
+        }
+
+    }
+
+    @PostMapping("/registerWaiting")
+    public ResponseEntity<?> registerWaiting(HttpServletRequest req)throws Exception {
+        String body = readBody(req);
+
+        org.json.simple.parser.JSONParser parser = new org.json.simple.parser.JSONParser();
+        Object obj = parser.parse(body);
+        JSONObject jsonObj = (JSONObject) obj;
         String phone = (String) jsonObj.get("phone");
         JSONArray menu = (JSONArray) jsonObj.get("menu");
         JSONArray flavor = (JSONArray) jsonObj.get("flavor");
 
-        System.out.println("name : "+ name);
         System.out.println("phone : "+ phone);
         System.out.println("menu : "+ menu);
         System.out.println("flavor : "+ flavor);
@@ -60,7 +77,6 @@ public class MainController {
 
         if(resultDto == null){
             paramDto.setPhone(phone);
-            paramDto.setName(name);
             String mmenu="";
             for(int i=0; i< menu.size();i++){
                 mmenu+= " " + menu.get(i);

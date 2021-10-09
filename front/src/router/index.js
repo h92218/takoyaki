@@ -21,7 +21,12 @@ const routes = [
     path:'/result',
     name:'result',
     component : () => import('../views/client_result.vue')
-  }
+  },
+  {
+      path:'/check',
+      name:'check',
+      component : () => import('../views/client_check.vue')
+    }
 ]
 
 const router = createRouter({
