@@ -60,8 +60,7 @@ export default {
     return{
         phone :'01032719321',
         selectedMenu:[],
-        selectedFlavor:[],
-        result:''
+        selectedFlavor:[]
     }
   },
   methods:{
@@ -78,9 +77,7 @@ export default {
                                     body: JSON.stringify(obj)
                                 }).then(response => response.text())
                                 .then(res=>{
-                                    console.log(res);
-                                    this.result=res;
-                                    location.href='http://localhost:8081/result?res='+this.result;
+                                    location.href='http://localhost:8081/result?res='+res;
                                 })
 
 

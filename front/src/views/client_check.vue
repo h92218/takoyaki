@@ -8,8 +8,12 @@
         <input type="submit" value="조회" @click="checkRegister">
 
         <div class="checkResult">
-            주문 메뉴 : {{}}
-
+             {{dataDto.menu}} | {{dataDto.flavor}} | {{dataDto.registerDate}} 에 등록하였습니다.<br><br>
+             <input type="submit" class="changeBtn" value="메뉴변경" @click="changeMenu"><br>
+             <input type="submit" class="changeBtn" value="대기 삭제" @click="deleteWaiting">
+        </div>
+        <div class="checkResultIsNull">
+            등록되지 않은 번호입니다.
         </div>
 
 
@@ -23,8 +27,8 @@ export default {
   name: 'check',
   data(){
     return{
-        phone:'01032719321'
-        dataDto:'';
+        phone:'01032719321',
+        dataDto:'',
     }
   },
   methods:{
@@ -38,12 +42,50 @@ export default {
                                     redirect : 'follow',
                                     referrer : 'no-referrer',
                                     body: JSON.stringify(obj)
-                                }).then(response => response.text())
-                                .then(res=>{
-                                    console.log(res);
-                                    if(res.equals(null))
+                                }).then(response => {
+                                    if(response.status != 200){
+                                        let x = document.getElementsByClassName("checkResultIsNull");
+                                        let y = document.getElementsByClassName("checkResult");
+                                        y[0].style.display='none';
+                                        x[0].style.display='block';
+
+
+                                    }else{
+                                        return response.json().then(res=>{
+                                             this.dataDto = res;
+                                             let x = document.getElementsByClassName("checkResultIsNull");
+                                             let y = document.getElementsByClassName("checkResult");
+                                             x[0].style.display='none';
+                                             y[0].style.display='block';
+
+                                        });
+                                    }
                                 })
 
+    },
+
+    deleteWaiting(){
+        if(confirm("주문을 취소하시겠습니까?") == true){
+            fetch("http://localhost:8081/deleteCustomer?phone="+this.phone,{
+                 method : 'GET',
+                 mode : 'cors',
+                 cache : 'no-cache',
+                 credentials : 'same-origin',
+                 redirect : 'follow',
+                 referrer : 'no-referrer'
+            }).then(response=>response.text())
+            .then(res=>{
+                console.log(res);
+                location.href='http://localhost:8081/result?res='+res;
+            })
+
+        }else{
+            return;
+        }
+
+    },
+    changeMenu(){
+        location.href='http://localhost:8081/changeMenu?phone='+this.phone+"&menu="+this.dataDto.menu+"&flavor="+this.dataDto.flavor;
     }
   }
 }
@@ -68,6 +110,10 @@ input[type=text]{
   box-sizing: border-box;
 }
 
+.changeBtn{
+    width:35% !important;
+}
+
 input[type=submit] {
   width: 100%;
   background-color: #4CAF50;
@@ -78,6 +124,14 @@ input[type=submit] {
   border-radius: 4px;
   cursor: pointer;
 }
+
+.checkResult, .checkResultIsNull{
+    display : none;
+    margin-top: 20px;
+    font-weight : bold;
+    font-size:1.5em;
+}
+
 
 
 </style>

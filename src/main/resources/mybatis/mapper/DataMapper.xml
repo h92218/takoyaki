@@ -20,21 +20,29 @@
         UPDATE CUSTOMER
         set COMPLETION=1,
         complete_date=(select to_char(sysdate,'yyyy-MM-dd hh:mm') from dual)
-        where phone=#{phone}
+        where phone=#{phone} and completion=0
     </update>
 
-    <delete id="deleteCostomer"  parameterType="takoyaki.model.DataDto">
+    <delete id="deleteCustomer"  parameterType="String">
         delete CUSTOMER
-        where phone=#{phone}
+        where phone=#{phone} and completion=0
     </delete>
 
     <update id="changeMenu" parameterType="takoyaki.model.DataDto" >
         update customer
         set menu=#{menu},
         flavor=#{flavor}
-        where phone=#{phone}
+        where phone=#{phone} and completion=0
     </update>
 
+    <select id="selectCount" resultType="int">
+        select count(*) from customer where completion=0
+
+    </select>
+
+    <select id="selectAll" resultType="takoyaki.model.DataDto">
+        select * from customer
+    </select>
 
 
 

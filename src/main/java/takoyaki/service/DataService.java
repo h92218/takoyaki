@@ -14,6 +14,7 @@ import takoyaki.mapper.DataMapper;
 import takoyaki.model.DataDto;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -42,5 +43,38 @@ public class DataService {
             result = "등록 실패";
         }
         return result;
+    }
+
+    public String deleteCustomer(String phone){
+        String result="";
+        try {
+            dataMapper.deleteCustomer(phone);
+            result = "주문 취소 완료";
+        }catch (Exception e){
+            e.printStackTrace();
+            result = "주문 취소 실패";
+        }
+        return result;
+
+    }
+
+    public String changeMenu(DataDto dataDto){
+        String result="";
+        try{
+            dataMapper.changeMenu(dataDto);
+            result = "주문 변경 완료";
+        }catch(Exception e){
+            e.printStackTrace();
+            result = "주문 변경 실패";
+        }
+        return result;
+    }
+
+    public Integer selectCount(){
+        return dataMapper.selectCount();
+    }
+
+    public List<DataDto> selectAll(){
+        return dataMapper.selectAll();
     }
 }

@@ -26,7 +26,18 @@ const routes = [
       path:'/check',
       name:'check',
       component : () => import('../views/client_check.vue')
-    }
+  },
+  {
+      path:'/changeMenu',
+      name:'changeMenu',
+      component : () => import('../views/client_changeMenu.vue'),
+  },
+  {
+    path:'/manager',
+    name:'managerMain',
+    component : ()=>import('../views/manager_main.vue')
+  }
+
 ]
 
 const router = createRouter({
