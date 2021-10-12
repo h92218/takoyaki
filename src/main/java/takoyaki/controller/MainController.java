@@ -10,6 +10,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.data.redis.core.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import takoyaki.config.RedisConfig;
@@ -125,6 +126,7 @@ public class MainController {
     @GetMapping("/selectCount")
     @ResponseBody
     public int selectCount(){
+
         return dataService.selectCount();
     }
 
@@ -144,7 +146,6 @@ public class MainController {
     @GetMapping("/selectAll")
     @ResponseBody
     public ResponseEntity<?> selectAll(){
-        System.out.println("selectAll 호출");
         List<DataDto> result = dataService.selectAll();
         return new ResponseEntity<>(result,HttpStatus.OK);
     }
@@ -152,12 +153,39 @@ public class MainController {
     @Autowired
     StringRedisTemplate redisTemplate;
 
-    @GetMapping("/selectTime")
+    @GetMapping("/getTime")
     @ResponseBody
-    public void setTime(){
+    public String getTime(){
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         String time =  valueOperations.get("time");
-        System.out.println(time);
+        return time;
     }
 
-}
+    @GetMapping("/selectWaitingCount")
+    @ResponseBody
+    public int selectWaitingCount(String phone){
+        System.out.println("selectWaitingCount : "+phone);
+        return dataService.selectWaitingCount(phone);
+    }
+
+    @GetMapping("/setTime")
+    @ResponseBody
+    public String setTime(double val){
+        ValueOperations<String, String> valueOp = redisTemplate.opsForValue();
+        valueOp.increment("time",val);
+        if(Double.valueOf(getTime())<=0){
+            System.out.println("연산결과가 0과 같거나 0보다 작음");
+            valueOp.set("time","0");
+        }
+        return getTime();
+
+    }
+
+    @GetMapping("completeCustomer")
+    public void completeCustomer(String phone){
+        dataService.completeCustomer(phone);
+    }
+
+
+
+    }

@@ -26,11 +26,11 @@ export default {
 </script>
 <style>
 #mainImg{
-   width: 50%;
+   width: 10%;
 }
 
 #titleImg{
-    width:60%;
+    width:20%;
 }
 
 .homeBtn{

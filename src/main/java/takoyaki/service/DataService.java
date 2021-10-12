@@ -77,4 +77,12 @@ public class DataService {
     public List<DataDto> selectAll(){
         return dataMapper.selectAll();
     }
+
+    public int selectWaitingCount(String phone){
+        return dataMapper.selectWaitingCount(phone);
+    }
+
+    public void completeCustomer(String phone){
+        dataMapper.completeCustomer(phone);
+    }
 }

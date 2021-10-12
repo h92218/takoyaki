@@ -15,4 +15,5 @@ public class DataDto {
     String completion;
     String registerDate;
     String completeDate;
+    int waitingCount;
 }

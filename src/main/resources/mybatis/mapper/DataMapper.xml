@@ -16,7 +16,7 @@
         (CUSTOMER_SEQUENCE.nextval,#{phone},#{menu},#{flavor},0,(select to_char(sysdate,'yyyy-MM-dd hh24:mm') from dual))
     </insert>
 
-    <update id="completeCustomer" parameterType="takoyaki.model.DataDto" >
+    <update id="completeCustomer" parameterType="String" >
         UPDATE CUSTOMER
         set COMPLETION=1,
         complete_date=(select to_char(sysdate,'yyyy-MM-dd hh:mm') from dual)
@@ -42,6 +42,14 @@
 
     <select id="selectAll" resultType="takoyaki.model.DataDto">
         select * from customer
+    </select>
+
+    <select id="selectWaitingCount" parameterType="String" resultType="int">
+        select count(*) from customer
+        <![CDATA[
+        where idx<(select idx from customer where phone=#{phone})
+        ]]>
+        and completion=0
     </select>
 
 

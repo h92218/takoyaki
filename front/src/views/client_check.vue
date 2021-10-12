@@ -8,7 +8,8 @@
         <input type="submit" value="조회" @click="checkRegister">
 
         <div class="checkResult">
-             {{dataDto.menu}} | {{dataDto.flavor}} | {{dataDto.registerDate}} 에 등록하였습니다.<br><br>
+            대기번호 : {{dataDto.idx}}번 | 앞의 대기 팀 {{waitingCount}}명<br>
+            {{dataDto.menu}} | {{dataDto.flavor}} | {{dataDto.registerDate}} 에 등록하였습니다.<br><br>
              <input type="submit" class="changeBtn" value="메뉴변경" @click="changeMenu"><br>
              <input type="submit" class="changeBtn" value="대기 삭제" @click="deleteWaiting">
         </div>
@@ -29,6 +30,7 @@ export default {
     return{
         phone:'01032719321',
         dataDto:'',
+        waitingCount:''
     }
   },
   methods:{
@@ -42,7 +44,7 @@ export default {
                                     redirect : 'follow',
                                     referrer : 'no-referrer',
                                     body: JSON.stringify(obj)
-                                }).then(response => {
+            }).then(response => {
                                     if(response.status != 200){
                                         let x = document.getElementsByClassName("checkResultIsNull");
                                         let y = document.getElementsByClassName("checkResult");
@@ -60,7 +62,15 @@ export default {
 
                                         });
                                     }
-                                })
+            }),
+
+        fetch("http://localhost:8081/selectWaitingCount?phone="+this.phone,{
+                method : 'GET'
+
+        }).then(response=>response.text())
+        .then(res=>{
+            this.waitingCount=res;
+        })
 
     },
 

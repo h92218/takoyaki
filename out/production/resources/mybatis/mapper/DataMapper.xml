@@ -44,6 +44,14 @@
         select * from customer
     </select>
 
+    <select id="selectWaitingCount" parameterType="String" resultType="int">
+        select count(*) from customer
+        <![CDATA[
+        where idx<(select idx from customer where phone=#{phone})
+        ]]>
+        and completion=0
+    </select>
+
 
 
 
