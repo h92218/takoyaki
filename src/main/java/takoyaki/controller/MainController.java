@@ -89,7 +89,9 @@ public class MainController {
 
     @GetMapping("deleteCustomer")
     public ResponseEntity<?> deleteCustomer(String phone){
+        System.out.println("deleteCustomer");
         String result = dataService.deleteCustomer(phone);
+        System.out.println(result);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -174,7 +176,6 @@ public class MainController {
         ValueOperations<String, String> valueOp = redisTemplate.opsForValue();
         valueOp.increment("time",val);
         if(Double.valueOf(getTime())<=0){
-            System.out.println("연산결과가 0과 같거나 0보다 작음");
             valueOp.set("time","0");
         }
         return getTime();
@@ -182,6 +183,7 @@ public class MainController {
     }
 
     @GetMapping("completeCustomer")
+    @ResponseBody
     public void completeCustomer(String phone){
         dataService.completeCustomer(phone);
     }

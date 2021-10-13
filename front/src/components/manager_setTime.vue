@@ -1,12 +1,13 @@
 <template>
     <div id="setTime">
-        현재 대기 시간 {{time}}분<br>
-        <br>
+        <br><br><br><br>
+        <font id="minute">현재 대기 시간 {{time}}분</font><br><br>
+
         <button class="minusBtn" @click='setValue' value="-5">-5분</button><button class="plusBtn" @click='setValue' value="5">+5분</button><br>
         <button class="minusBtn" @click='setValue' value="-10">-10분</button><button class="plusBtn" @click='setValue' value="10">+10분</button><br>
         <button class="minusBtn" @click='setValue' value="-15">-15분</button><button class="plusBtn" @click='setValue' value="15">+15분</button><br>
         <button class="minusBtn" @click='setValue' value="-20">-20분</button><button class="plusBtn" @click='setValue' value="20">+20분</button><br>
-
+        <br>
     </div>
 </template>
 <script>
@@ -75,6 +76,10 @@ export default {
 .plusBtn:hover{
     cursor: pointer;
     background-color: #d25950;
+}
+#minute{
+    font-size:1.3em;
+    font-weight:bold;
 }
 
 </style>

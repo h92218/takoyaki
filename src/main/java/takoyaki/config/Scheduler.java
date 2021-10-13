@@ -15,8 +15,6 @@ public class Scheduler {
 
     @Scheduled(fixedRateString = "60000", initialDelay = 60000)
     public void decTime() {
-        System.out.println("1분 감소");
         main.setTime(-1);
-        System.out.println(main.getTime());
     }
 }

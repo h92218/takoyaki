@@ -13,10 +13,10 @@
     <insert id="insertCustomer" parameterType="takoyaki.model.DataDto" >
         INSERT INTO CUSTOMER (idx,phone,menu,flavor,completion,register_date)
         VALUES
-        (CUSTOMER_SEQUENCE.nextval,#{phone},#{menu},#{flavor},0,(select to_char(sysdate,'yyyy-MM-dd hh24:mm') from dual))
+        (CUSTOMER_SEQUENCE.nextval,#{phone},#{menu},#{flavor},0,#{registerDate})
     </insert>
 
-    <update id="completeCustomer" parameterType="takoyaki.model.DataDto" >
+    <update id="completeCustomer" parameterType="String" >
         UPDATE CUSTOMER
         set COMPLETION=1,
         complete_date=(select to_char(sysdate,'yyyy-MM-dd hh:mm') from dual)
@@ -41,7 +41,7 @@
     </select>
 
     <select id="selectAll" resultType="takoyaki.model.DataDto">
-        select * from customer
+        select * from customer order by idx
     </select>
 
     <select id="selectWaitingCount" parameterType="String" resultType="int">

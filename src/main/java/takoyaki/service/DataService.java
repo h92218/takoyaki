@@ -13,6 +13,8 @@ import org.springframework.util.StringUtils;
 import takoyaki.mapper.DataMapper;
 import takoyaki.model.DataDto;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +36,12 @@ public class DataService {
     }
 
     public String insertCustomer(DataDto dataDto){
+        Date myDate = new Date();
+        SimpleDateFormat dtFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        String myString = dtFormat.format(myDate);
+
+        dataDto.setRegisterDate(myString);
+
         String result="";
         try {
             dataMapper.insertCustomer(dataDto);

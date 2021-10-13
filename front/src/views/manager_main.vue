@@ -1,5 +1,6 @@
 <template>
     <div id="managerMain">
+        <div>현재 대기 시간{{time}} 분</div>
        <button class="selectedTab" id="tab1" @click='changeTab'>웨이팅 확인</button>
        <button class="managerBtn" id="tab2" @click='changeTab'>대기 시간 설정</button>
        <div v-if="check">
@@ -21,9 +22,18 @@ export default {
     checkWaiting,
     setTime
    },
+   mounted(){
+    fetch("http://localhost:8081/getTime",{
+                 method : 'GET'
+                }).then(response=>response.text())
+                    .then(res=>{
+                        this.time=res;
+                })
+   },
    data(){
     return{
-        check:true
+        check:true,
+        time:''
     }
    },
    methods:{
@@ -37,6 +47,14 @@ export default {
        }else{
             this.check=false;
        }
+    },
+    getValue(){
+            fetch("http://localhost:8081/getTime",{
+             method : 'GET'
+            }).then(response=>response.text())
+                .then(res=>{
+                    this.time=res;
+            })
     }
 
    }
