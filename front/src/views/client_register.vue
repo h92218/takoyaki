@@ -78,6 +78,10 @@ export default {
                                 }).then(response => response.text())
                                 .then(res=>{
                                     location.href='http://localhost:8081/result?res='+res;
+                                    if(res =="등록 완료"){
+                                        let eventBus = new Vue();
+                                        eventBus.$emit('successRegister');
+                                    }
                                 })
 
 

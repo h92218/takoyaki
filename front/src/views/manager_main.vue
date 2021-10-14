@@ -1,13 +1,14 @@
 <template>
     <div id="managerMain">
         <div>현재 대기 시간{{time}} 분</div>
+        <div>현재 대기 팀 {{team}} 명</div>
        <button class="selectedTab" id="tab1" @click='changeTab'>웨이팅 확인</button>
        <button class="managerBtn" id="tab2" @click='changeTab'>대기 시간 설정</button>
        <div v-if="check">
             <checkWaiting/>
        </div>
        <div v-else>
-            <setTime/>
+            <setTime @update="timeChanged"/>
        </div>
     </div>
 
@@ -23,17 +24,26 @@ export default {
     setTime
    },
    mounted(){
+   window.setInterval('location.reload()', 60000);
     fetch("http://localhost:8081/getTime",{
                  method : 'GET'
                 }).then(response=>response.text())
                     .then(res=>{
                         this.time=res;
-                })
+                }),
+
+    fetch("http://localhost:8081/selectCount",{
+         method : 'GET'
+    }).then(response=>response.text())
+    .then(res=>{
+        this.team=res;
+    });
    },
    data(){
     return{
         check:true,
-        time:''
+        time:'',
+        team:''
     }
    },
    methods:{
@@ -55,7 +65,11 @@ export default {
                 .then(res=>{
                     this.time=res;
             })
+    },
+    timeChanged(ttime){
+        this.time=ttime;
     }
+
 
    }
 }

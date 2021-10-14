@@ -1,7 +1,6 @@
 <template>
     <div id="setTime">
         <br><br><br><br>
-        <font id="minute">현재 대기 시간 {{time}}분</font><br><br>
 
         <button class="minusBtn" @click='setValue' value="-5">-5분</button><button class="plusBtn" @click='setValue' value="5">+5분</button><br>
         <button class="minusBtn" @click='setValue' value="-10">-10분</button><button class="plusBtn" @click='setValue' value="10">+10분</button><br>
@@ -29,6 +28,7 @@ export default {
         }).then(response=>response.text())
             .then(res=>{
                 this.time=res;
+                 this.$emit('update',this.time);
         })
     },
     getValue(){
