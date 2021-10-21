@@ -11,9 +11,9 @@
 
 
     <insert id="insertCustomer" parameterType="takoyaki.model.DataDto" >
-        INSERT INTO CUSTOMER (idx,phone,menu,flavor,completion,register_date)
+        INSERT INTO CUSTOMER (idx,phone,menu,flavor,completion,register_date,remain_time)
         VALUES
-        (CUSTOMER_SEQUENCE.nextval,#{phone},#{menu},#{flavor},0,#{registerDate})
+        (CUSTOMER_SEQUENCE.nextval,#{phone},#{menu},#{flavor},0,#{registerDate},#{remainTime})
     </insert>
 
     <update id="completeCustomer" parameterType="String" >

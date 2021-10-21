@@ -2,7 +2,7 @@
 <div class="container">
 <label>번호</label>
 <input type="text" v-model="phone">
-<div class='menu'>메뉴</div>{{selectedMenu}}
+<div class='menu'>메뉴</div>
 <div class='menu'>
     <label for="3">
 <div class='checkbox_box_default' >
@@ -26,7 +26,7 @@
     </label>
 </div>
 <br>
-<div class='menu'>맛 선택(여러개 선택 가능)</div>{{selectedFlavor}}
+<div class='menu'>맛 선택(여러개 선택 가능)</div>
 <div class='menu'>
 
     <label for="original" >
@@ -65,7 +65,16 @@ export default {
   },
   methods:{
     submit(){
-        let obj = {"phone":this.phone,"menu":this.selectedMenu,"flavor":this.selectedFlavor};
+        let time;
+        fetch("http://localhost:8081/getTime",{
+               method : 'GET'
+        })
+        .then(response=>response.text())
+        .then(res=>{
+            time = res;
+        }).then(()=>{
+
+        let obj = {"phone":this.phone,"menu":this.selectedMenu,"flavor":this.selectedFlavor,"remainTime":time};
         console.log(obj);
          fetch("http://localhost:8081/registerWaiting",{
                                     method : 'POST',
@@ -77,12 +86,9 @@ export default {
                                     body: JSON.stringify(obj)
                                 }).then(response => response.text())
                                 .then(res=>{
-                                    location.href='http://localhost:8081/result?res='+res;
-                                    if(res =="등록 완료"){
-                                        let eventBus = new Vue();
-                                        eventBus.$emit('successRegister');
-                                    }
+                               location.href='http://localhost:8081/result?res='+res;
                                 })
+        })
 
 
     }

@@ -8,8 +8,12 @@
         <input type="submit" value="조회" @click="checkRegister">
 
         <div class="checkResult">
-            대기번호 : {{dataDto.idx}}번 | 앞의 대기 팀 {{waitingCount}}명<br>
-            {{dataDto.menu}} | {{dataDto.flavor}} | {{dataDto.registerDate}} 에 등록하였습니다.<br><br>
+            남은 대기시간 {{dataDto.remainTime}}분<br><br>
+            앞의 대기 팀 {{waitingCount}}명<br><br>
+
+            대기번호 : {{dataDto.idx}}번 <br><br>
+            메뉴 :   {{dataDto.flavor}} {{dataDto.menu}}<br><br>
+            등록시각 : {{dataDto.registerDate}}<br><br>
              <input type="submit" class="changeBtn" value="메뉴변경" @click="changeMenu"><br>
              <input type="submit" class="changeBtn" value="대기 삭제" @click="deleteWaiting">
         </div>

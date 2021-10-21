@@ -45,6 +45,18 @@ public class MainController {
         if(resultDto == null){
             return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
         }else{
+            String regidate = resultDto.getRegisterDate();
+            Date myDate = new Date();
+            SimpleDateFormat dtFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            Date regiTime   = dtFormat.parse(regidate);
+            long diffMinute = ((myDate.getTime() - regiTime.getTime())/1000/60);
+            int newTime = (int)resultDto.getRemainTime() - (int)diffMinute;
+
+            if(newTime<0){
+                newTime=0;
+            }
+            resultDto.setRemainTime(newTime);
+
             return new ResponseEntity<>(resultDto, HttpStatus.OK);
         }
 
@@ -58,8 +70,10 @@ public class MainController {
         Object obj = parser.parse(body);
         JSONObject jsonObj = (JSONObject) obj;
         String phone = (String) jsonObj.get("phone");
+        int remainTime = Integer.valueOf((String)jsonObj.get("remainTime"));
         JSONArray menu = (JSONArray) jsonObj.get("menu");
         JSONArray flavor = (JSONArray) jsonObj.get("flavor");
+
 
         DataDto resultDto = dataService.selectCustomer(phone);
 
@@ -68,6 +82,7 @@ public class MainController {
 
         if(resultDto == null){
             paramDto.setPhone(phone);
+            paramDto.setRemainTime(remainTime);
             String mmenu="";
             for(int i=0; i< menu.size();i++){
                 mmenu+= " " + menu.get(i);
@@ -166,7 +181,6 @@ public class MainController {
     @GetMapping("/selectWaitingCount")
     @ResponseBody
     public int selectWaitingCount(String phone){
-        System.out.println("selectWaitingCount : "+phone);
         return dataService.selectWaitingCount(phone);
     }
 
